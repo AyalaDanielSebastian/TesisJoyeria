@@ -1,6 +1,29 @@
 @backend_HostAddress = http://localhost:5243
 
-GET {{backend_HostAddress}}/weatherforecast/
-Accept: application/json
+### Login Administrador
+POST {{backend_HostAddress}}/api/auth/login
+Content-Type: application/json
 
-###
+{
+  "email": "admin@joyeria.com",
+  "password": "Admin123!"
+}
+
+### Login Empleado
+POST {{backend_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "empleado@joyeria.com",
+  "password": "Empleado123!"
+}
+
+### Registro Cliente
+POST {{backend_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{
+  "nombre": "Juan Pérez",
+  "email": "juan@email.com",
+  "password": "Cliente123!"
+}

@@ -22,19 +22,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-# Evitar subir carpetas pesadas de React
-frontend/node_modules/
-frontend/dist/
-frontend/.env
-
-# Evitar subir carpetas temporales y compilados de C#
-backend/bin/
-backend/obj/
-backend/.vs/
-backend/*.user
-backend/appsettings.Development.json
-
-
-# Ignorar configuraciones de JetBrains Rider / IntelliJ
-.idea/
