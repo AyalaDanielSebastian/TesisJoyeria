@@ -34,3 +34,7 @@ backend/obj/
 backend/.vs/
 backend/*.user
 backend/appsettings.Development.json
+
+
+# Ignorar configuraciones de JetBrains Rider / IntelliJ
+.idea/
