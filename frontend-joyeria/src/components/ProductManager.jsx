@@ -7,6 +7,7 @@ import {
   updateProducto,
   uploadProductoImagen,
 } from '../services/productoApi'
+import { useAuth } from '../context/AuthContext'
 import { formatPrice, imagenUrl } from '../utils/format'
 import './ProductManager.css'
 
@@ -29,6 +30,8 @@ const EMPTY = {
 }
 
 export default function ProductManager() {
+  const { user } = useAuth()
+  const esAdmin = user?.rol === 'Administrador'
   const [productos, setProductos] = useState([])
   const [categorias, setCategorias] = useState([])
   const [loading, setLoading] = useState(true)
@@ -138,7 +141,7 @@ export default function ProductManager() {
         imagenUrl: form.imagenUrl,
         materialDefault: form.metalesDisponibles[0] || form.materialDefault,
         metalesDisponibles: form.metalesDisponibles,
-        tallasDisponibles: form.tallasDisponibles,
+        tallasDisponibles: form.permitePersonalizacion ? form.tallasDisponibles : '',
         recargoGrabado: parseFloat(form.recargoGrabado) || 0,
       }
 
@@ -184,9 +187,11 @@ export default function ProductManager() {
     <div className="product-manager">
       <div className="product-manager-header">
         <h2 className="section-title h4 mb-0">Catálogo de joyas</h2>
-        <button type="button" className="btn btn-primary btn-sm" onClick={abrirNuevo}>
-          + Nueva joya
-        </button>
+        {esAdmin && (
+          <button type="button" className="btn btn-primary btn-sm" onClick={abrirNuevo}>
+            + Nueva joya
+          </button>
+        )}
       </div>
 
       {error && <div className="alert alert-danger mt-3">{error}</div>}
@@ -207,7 +212,7 @@ export default function ProductManager() {
                 <th>Precio</th>
                 <th>Stock</th>
                 <th>Personalizable</th>
-                <th></th>
+                {esAdmin && <th></th>}
               </tr>
             </thead>
             <tbody>
@@ -227,14 +232,16 @@ export default function ProductManager() {
                     )}
                   </td>
                   <td>{p.permitePersonalizacion ? 'Sí' : 'No'}</td>
-                  <td>
-                    <button type="button" className="btn btn-outline-light btn-sm me-1" onClick={() => abrirEditar(p)}>
-                      Editar
-                    </button>
-                    <button type="button" className="navbar-logout" onClick={() => handleEliminar(p.id)}>
-                      Desactivar
-                    </button>
-                  </td>
+                  {esAdmin && (
+                    <td>
+                      <button type="button" className="btn btn-outline-light btn-sm me-1" onClick={() => abrirEditar(p)}>
+                        Editar
+                      </button>
+                      <button type="button" className="navbar-logout" onClick={() => handleEliminar(p.id)}>
+                        Desactivar
+                      </button>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>
@@ -242,7 +249,7 @@ export default function ProductManager() {
         </div>
       )}
 
-      {showForm && (
+      {esAdmin && showForm && (
         <div className="pm-modal-overlay" onClick={() => setShowForm(false)}>
           <div className="pm-modal card-brand" onClick={(e) => e.stopPropagation()}>
             <h3 className="auth-title mb-4">{editId ? 'Editar joya' : 'Nueva joya'}</h3>

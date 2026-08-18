@@ -37,7 +37,7 @@ public class ProductosController(
     }
 
     [HttpPost]
-    [Authorize(Roles = $"{Roles.Administrador},{Roles.Empleado}")]
+    [Authorize(Roles = Roles.Administrador)]
     public async Task<IActionResult> Crear([FromBody] CreateProductoRequest request)
     {
         var (producto, error) = await productoService.CrearAsync(request);
@@ -45,7 +45,7 @@ public class ProductosController(
     }
 
     [HttpPut("{id:int}")]
-    [Authorize(Roles = $"{Roles.Administrador},{Roles.Empleado}")]
+    [Authorize(Roles = Roles.Administrador)]
     public async Task<IActionResult> Actualizar(int id, [FromBody] UpdateProductoRequest request)
     {
         var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
@@ -54,7 +54,7 @@ public class ProductosController(
     }
 
     [HttpDelete("{id:int}")]
-    [Authorize(Roles = $"{Roles.Administrador},{Roles.Empleado}")]
+    [Authorize(Roles = Roles.Administrador)]
     public async Task<IActionResult> Eliminar(int id)
     {
         var (ok, error) = await productoService.EliminarAsync(id);
@@ -62,7 +62,7 @@ public class ProductosController(
     }
 
     [HttpPost("{id:int}/imagen")]
-    [Authorize(Roles = $"{Roles.Administrador},{Roles.Empleado}")]
+    [Authorize(Roles = Roles.Administrador)]
     public async Task<IActionResult> SubirImagen(int id, IFormFile archivo)
     {
         if (archivo is null || archivo.Length == 0)

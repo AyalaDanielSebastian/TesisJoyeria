@@ -65,7 +65,16 @@
 
 .admin-select {
   font-size: 0.8rem;
-  min-width: 140px;
+  min-width: 160px;
+  background-color: var(--surface);
+  color: var(--gold-light);
+}
+
+.admin-select:disabled {
+  background-color: var(--surface);
+  color: var(--gold-light);
+  opacity: 1;
+  cursor: not-allowed;
 }
 
 .admin-save-btn {

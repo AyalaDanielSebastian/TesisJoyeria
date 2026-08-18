@@ -80,7 +80,9 @@ public class ProductoService(AppDbContext db)
             ImagenUrl = req.ImagenUrl,
             MaterialDefault = metales[0],
             OpcionesMetales = PrecioPersonalizacionService.SerializarMetales(metales),
-            TallasDisponibles = req.TallasDisponibles.Trim(),
+            TallasDisponibles = req.PermitePersonalizacion
+                ? req.TallasDisponibles.Trim()
+                : string.Empty,
             RecargoGrabado = req.RecargoGrabado
         };
 
@@ -111,7 +113,9 @@ public class ProductoService(AppDbContext db)
         producto.Activo = req.Activo;
         producto.MaterialDefault = metales[0];
         producto.OpcionesMetales = PrecioPersonalizacionService.SerializarMetales(metales);
-        producto.TallasDisponibles = req.TallasDisponibles.Trim();
+        producto.TallasDisponibles = req.PermitePersonalizacion
+            ? req.TallasDisponibles.Trim()
+            : string.Empty;
         producto.RecargoGrabado = req.RecargoGrabado;
         producto.FechaActualizacion = DateTime.UtcNow;
 

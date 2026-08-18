@@ -37,10 +37,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
+var corsOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
+    ?? ["http://localhost:5173", "http://127.0.0.1:5173"];
+var extraCors = builder.Configuration["Cors:ExtraOrigins"];
+if (!string.IsNullOrWhiteSpace(extraCors))
+    corsOrigins = [.. corsOrigins, .. extraCors.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)];
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("Frontend", policy =>
-        policy.WithOrigins("http://localhost:5173")
+        policy.WithOrigins(corsOrigins.Where(o => !string.IsNullOrWhiteSpace(o)).Distinct().ToArray())
               .AllowAnyHeader()
               .AllowAnyMethod());
 });

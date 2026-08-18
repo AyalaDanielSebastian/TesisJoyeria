@@ -1,3 +1,5 @@
+import { API_ORIGIN } from '../services/apiConfig'
+
 export function formatPrice(amount) {
   return `$${Number(amount).toLocaleString('en-US', {
     minimumFractionDigits: Number(amount) % 1 === 0 ? 0 : 2,
@@ -7,7 +9,7 @@ export function formatPrice(amount) {
 
 export function imagenUrl(url) {
   if (!url) return 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=400&q=80'
-  if (url.startsWith('/uploads')) return url
+  if (url.startsWith('/uploads')) return `${API_ORIGIN}${url}`
   return url
 }
 

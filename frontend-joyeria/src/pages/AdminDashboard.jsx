@@ -99,7 +99,7 @@ export default function AdminDashboard() {
       ) : (
         <>
       <div className="admin-info card-brand dashboard-card mb-4">
-        <span className="badge-gold mb-2 d-inline-block">HU-06</span>
+        
         <p className="mb-0">
           Gestiona roles, desactiva usuarios y consulta la auditoría
           (último acceso, modificaciones y fechas).

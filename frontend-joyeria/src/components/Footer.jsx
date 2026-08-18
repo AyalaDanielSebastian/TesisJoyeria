@@ -9,7 +9,7 @@ export default function Footer() {
         <div className="footer-top">
           <div>
             <p className="footer-logo">{BRAND_NAME}</p>
-            <p className="footer-tagline">Joyería fina artesanal desde 1987</p>
+            <p className="footer-tagline">Joyería fina artesanal</p>
           </div>
           <div className="footer-links">
             <a href="https://instagram.com" target="_blank" rel="noreferrer">Instagram</a>

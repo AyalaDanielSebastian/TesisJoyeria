@@ -8,6 +8,7 @@ const NAV_LINKS = [
   { label: 'Anillos', categoria: 'Anillos' },
   { label: 'Collares', categoria: 'Collares' },
   { label: 'Pendientes', categoria: 'Pendientes' },
+  { label: 'Pulseras', categoria: 'Pulseras' },
 ]
 
 export default function Navbar() {
@@ -23,7 +24,7 @@ export default function Navbar() {
 
   return (
     <header className="navbar-brand-custom fixed-top">
-      <div className="container-narrow navbar-inner">
+      <div className="navbar-inner">
         <Link to="/" className="navbar-logo">
           {BRAND_NAME}
         </Link>
@@ -43,6 +44,7 @@ export default function Navbar() {
                 <>
                   <Link to="/tienda" className="navbar-link d-none d-sm-inline">Tienda</Link>
                   <Link to="/cliente/carrito" className="navbar-shop-link">Carrito</Link>
+                  <Link to="/cliente/ordenes" className="navbar-link d-none d-sm-inline">Mis órdenes</Link>
                 </>
               )}
               <Link to={panelPath} className="navbar-shop-link">

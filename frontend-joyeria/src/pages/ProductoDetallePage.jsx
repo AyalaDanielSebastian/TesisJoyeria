@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-import { getProducto, calcularPrecioProducto } from '../services/catalogApi'
+import { getProducto } from '../services/catalogApi'
 import { addToCarrito } from '../services/carritoApi'
 import { formatPrice, imagenUrl } from '../utils/format'
 import '../components/ProductCard.css'
@@ -15,6 +15,15 @@ function calcularPrecioLocal(producto, grabado) {
     precio += producto.recargoGrabado
   }
   return precio
+}
+
+function tallasDe(producto) {
+  const raw = producto?.tallasDisponibles
+  if (!raw) return []
+  if (Array.isArray(raw)) {
+    return raw.map((t) => String(t).trim()).filter(Boolean)
+  }
+  return String(raw).split(',').map((t) => t.trim()).filter(Boolean)
 }
 
 export default function ProductoDetallePage() {
@@ -56,7 +65,8 @@ export default function ProductoDetallePage() {
     [producto, grabado]
   )
 
-  const requiereTalla = producto?.tallasDisponibles?.length > 0
+  const tallas = tallasDe(producto)
+  const requiereTalla = Boolean(producto?.permitePersonalizacion) && tallas.length > 0
   const agotada = producto?.stock === 0
 
   const validarOpciones = () => {
@@ -79,14 +89,11 @@ export default function ProductoDetallePage() {
 
     setAdding(true)
     try {
-      await calcularPrecioProducto(producto.id, {
-        metal,
-        talla,
-        grabado,
-        cantidad,
-      })
+      const personalizacion = producto.permitePersonalizacion
+        ? { metal, talla: requiereTalla ? talla : '', grabado }
+        : { metal: '', talla: '', grabado: '' }
 
-      await addToCarrito(producto.id, cantidad, { metal, talla, grabado })
+      await addToCarrito(producto.id, cantidad, personalizacion)
       setSuccess('Pieza agregada al carrito.')
       setTimeout(() => navigate('/cliente/carrito'), 800)
     } catch (err) {
@@ -195,7 +202,7 @@ export default function ProductoDetallePage() {
                           required
                         >
                           <option value="">Seleccionar...</option>
-                          {producto.tallasDisponibles.map((t) => (
+                          {tallas.map((t) => (
                             <option key={t} value={t}>{t}</option>
                           ))}
                         </select>

@@ -73,6 +73,9 @@ public static class PrecioPersonalizacionService
     public static (decimal PrecioUnitario, string? Error) CalcularPrecioUnitario(
         Producto producto, string metal, string talla, string grabado)
     {
+        if (!producto.PermitePersonalizacion)
+            return (producto.Precio, null);
+
         var metales = ObtenerMetales(producto);
         var metalSeleccionado = string.IsNullOrWhiteSpace(metal)
             ? metales.FirstOrDefault()?.Nombre ?? producto.MaterialDefault

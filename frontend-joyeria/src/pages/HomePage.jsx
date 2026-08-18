@@ -29,13 +29,12 @@ export default function HomePage() {
       <section className="hero" style={{ backgroundImage: `url(${HERO_IMAGE})` }}>
         <div className="hero-overlay" />
         <div className="hero-content">
-          <p className="label-caps">Artesanía desde 1987</p>
+          <p className="label-caps">Artesanía que trasciende</p>
           <h1 className="hero-title">
             Joyas que <em>eternizan</em> momentos
           </h1>
           <p className="hero-subtitle">
             Cada pieza es una obra maestra artesanal, forjada a mano con los metales
-            más puros y las piedras más exquisitas.
           </p>
           <div className="hero-actions">
             <Link to="/tienda" className="btn btn-primary">

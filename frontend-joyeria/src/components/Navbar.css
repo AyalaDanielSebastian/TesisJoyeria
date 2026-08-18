@@ -8,12 +8,18 @@
 .navbar-inner {
   align-items: center;
   display: flex;
+  gap: 2.5rem;
   height: 4.5rem;
   justify-content: space-between;
+  margin: 0 auto;
+  max-width: 1600px;
+  padding: 0 2.5rem;
+  width: 100%;
 }
 
 .navbar-logo {
   color: var(--foreground);
+  flex-shrink: 0;
   font-family: 'Cormorant', serif;
   font-size: 1.15rem;
   font-weight: 400;
@@ -28,15 +34,19 @@
 
 .navbar-links {
   align-items: center;
-  gap: 2.5rem;
+  flex: 1;
+  gap: 2.75rem;
+  justify-content: center;
 }
 
 .navbar-link {
   color: var(--foreground);
+  flex-shrink: 0;
   font-size: 0.7rem;
   font-weight: 400;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .navbar-link:hover {
@@ -46,15 +56,18 @@
 .navbar-actions {
   align-items: center;
   display: flex;
-  gap: 1.5rem;
+  flex-shrink: 0;
+  gap: 2.25rem;
 }
 
 .navbar-shop-link {
   color: var(--gold);
+  flex-shrink: 0;
   font-size: 0.7rem;
   font-weight: 500;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .navbar-shop-link:hover {
@@ -77,4 +90,10 @@
 .navbar-logout:hover {
   border-color: var(--gold);
   color: var(--gold);
+}
+
+@media (min-width: 992px) {
+  .navbar-links {
+    display: flex;
+  }
 }

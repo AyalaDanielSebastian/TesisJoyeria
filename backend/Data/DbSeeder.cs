@@ -168,16 +168,6 @@ public static class DbSeeder
 
             if (p.RecargoGrabado <= 0 || p.RecargoGrabado >= 10m)
                 p.RecargoGrabado = 1.50m;
-
-            if (string.IsNullOrWhiteSpace(p.TallasDisponibles))
-            {
-                p.TallasDisponibles = p.Categoria.Nombre switch
-                {
-                    "Anillos" => "5,6,7,8,9,10",
-                    "Pulseras" => "S,M,L",
-                    _ => string.Empty
-                };
-            }
         }
 
         await db.SaveChangesAsync();
