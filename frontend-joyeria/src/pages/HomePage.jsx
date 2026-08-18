@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useAuth, getDashboardPath } from '../context/AuthContext'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import ProductCard from '../components/ProductCard'
@@ -12,6 +13,7 @@ const HERO_IMAGE =
   'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1920&q=80'
 
 export default function HomePage() {
+  const { isAuthenticated, user } = useAuth()
   const [productos, setProductos] = useState([])
   const [categorias, setCategorias] = useState([])
 
@@ -40,9 +42,15 @@ export default function HomePage() {
             <Link to="/tienda" className="btn btn-primary">
               Explorar colección
             </Link>
-            <Link to="/register" className="btn btn-outline-light">
-              Crear cuenta
-            </Link>
+            {isAuthenticated ? (
+              <Link to={getDashboardPath(user.rol)} className="btn btn-outline-light">
+                Ir a mi cuenta
+              </Link>
+            ) : (
+              <Link to="/register" className="btn btn-outline-light">
+                Crear cuenta
+              </Link>
+            )}
           </div>
         </div>
       </section>
