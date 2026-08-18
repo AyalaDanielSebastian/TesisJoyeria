@@ -194,6 +194,21 @@ export default function OrdenesEmpleadoPanel() {
                     <p className="mb-1">{detalle.clienteNombre}</p>
                     <p className="text-muted small">{detalle.clienteEmail}</p>
 
+                    <p className="label-caps mb-1 mt-3">Envío</p>
+                    {detalle.envio ? (
+                      <>
+                        <p className="mb-1">{detalle.envio.nombre}</p>
+                        <p className="text-muted small mb-0">{detalle.envio.telefono}</p>
+                        <p className="text-muted small mb-0">{detalle.envio.direccion}</p>
+                        <p className="text-muted small mb-0">{detalle.envio.ciudad}</p>
+                        {detalle.envio.referencia && (
+                          <p className="text-muted small mb-0">Ref: {detalle.envio.referencia}</p>
+                        )}
+                      </>
+                    ) : (
+                      <p className="text-muted small">Sin datos de envío.</p>
+                    )}
+
                     <p className="label-caps mb-1 mt-3">Estado</p>
                     <span className={`orden-estado orden-estado--${detalle.estado.toLowerCase()}`}>
                       {ESTADOS_ORDEN[detalle.estado] ?? detalle.estado}

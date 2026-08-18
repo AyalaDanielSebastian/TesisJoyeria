@@ -30,6 +30,25 @@ public class Orden
     [Column(TypeName = "decimal(18,2)")]
     public decimal MontoPagado { get; set; }
 
+    [Required]
+    [StringLength(100)]
+    public string NombreDestinatario { get; set; } = string.Empty;
+
+    [Required]
+    [StringLength(20)]
+    public string TelefonoEnvio { get; set; } = string.Empty;
+
+    [Required]
+    [StringLength(250)]
+    public string DireccionEnvio { get; set; } = string.Empty;
+
+    [Required]
+    [StringLength(80)]
+    public string CiudadEnvio { get; set; } = string.Empty;
+
+    [StringLength(200)]
+    public string? ReferenciaEnvio { get; set; }
+
     [StringLength(500)]
     public string? NotasVerificacion { get; set; }
 

@@ -10,15 +10,36 @@ public class OrdenService(AppDbContext db)
     /// <summary>Porcentaje de anticipo por defecto sobre el total (50%).</summary>
     public const decimal PorcentajeAnticipoDefault = 0.50m;
 
-    public async Task<(OrdenDto? Orden, string? Error)> CrearDesdeCarritoAsync(int clienteId)
+    public async Task<(OrdenDto? Orden, string? Error)> CrearDesdeCarritoAsync(
+        int clienteId, CrearOrdenRequest request)
     {
-        var items = await db.CarritoItems
+        var errorEnvio = ValidarEnvio(request);
+        if (errorEnvio is not null)
+            return (null, errorEnvio);
+
+        var itemIds = request.ItemIds;
+        var query = db.CarritoItems
             .Include(c => c.Producto)
-            .Where(c => c.UsuarioId == clienteId)
-            .ToListAsync();
+            .Where(c => c.UsuarioId == clienteId);
+
+        List<CarritoItem> items;
+        if (itemIds is not null)
+        {
+            var ids = itemIds.Distinct().ToList();
+            if (ids.Count == 0)
+                return (null, "Selecciona al menos un producto para confirmar la orden.");
+
+            items = await query.Where(c => ids.Contains(c.Id)).ToListAsync();
+            if (items.Count != ids.Count)
+                return (null, "Algunos productos seleccionados ya no están en el carrito.");
+        }
+        else
+        {
+            items = await query.ToListAsync();
+        }
 
         if (items.Count == 0)
-            return (null, "El carrito está vacío.");
+            return (null, "Selecciona al menos un producto para confirmar la orden.");
 
         foreach (var item in items)
         {
@@ -41,6 +62,11 @@ public class OrdenService(AppDbContext db)
             Impuesto = impuesto,
             Total = total,
             MontoPagado = 0,
+            NombreDestinatario = request.NombreDestinatario.Trim(),
+            TelefonoEnvio = request.Telefono.Trim(),
+            DireccionEnvio = request.Direccion.Trim(),
+            CiudadEnvio = request.Ciudad.Trim(),
+            ReferenciaEnvio = string.IsNullOrWhiteSpace(request.Referencia) ? null : request.Referencia.Trim(),
             Detalles = items.Select(i =>
             {
                 var precio = i.PrecioUnitario > 0 ? i.PrecioUnitario : i.Producto.Precio;
@@ -70,7 +96,14 @@ public class OrdenService(AppDbContext db)
         var ordenes = await db.Ordenes
             .Where(o => o.ClienteId == clienteId)
             .OrderByDescending(o => o.FechaCreacion)
-            .Select(o => new { o.Id, o.Estado, o.Total, o.MontoPagado, o.FechaCreacion, Cantidad = o.Detalles.Count })
+            .Select(o => new {
+                o.Id, o.Estado, o.Total, o.MontoPagado, o.FechaCreacion,
+                Cantidad = o.Detalles.Count,
+                o.NombreDestinatario, o.TelefonoEnvio, o.DireccionEnvio, o.CiudadEnvio, o.ReferenciaEnvio,
+                TieneComprobante = o.Comprobante != null,
+                ComprobanteUrl = o.Comprobante != null ? o.Comprobante.RutaArchivo : null,
+                ComprobanteMime = o.Comprobante != null ? o.Comprobante.TipoMime : null
+            })
             .ToListAsync();
 
         return ordenes.Select(o => new OrdenResumenDto(
@@ -80,7 +113,11 @@ public class OrdenService(AppDbContext db)
             o.MontoPagado,
             Math.Max(0, o.Total - o.MontoPagado),
             o.FechaCreacion,
-            o.Cantidad
+            o.Cantidad,
+            MapEnvio(o.NombreDestinatario, o.TelefonoEnvio, o.DireccionEnvio, o.CiudadEnvio, o.ReferenciaEnvio),
+            o.TieneComprobante,
+            o.ComprobanteUrl,
+            o.ComprobanteMime
         )).ToList();
     }
 
@@ -136,6 +173,28 @@ public class OrdenService(AppDbContext db)
     public static decimal CalcularAnticipoSugerido(decimal total) =>
         Math.Round(total * PorcentajeAnticipoDefault, 2);
 
+    private static string? ValidarEnvio(CrearOrdenRequest request)
+    {
+        if (string.IsNullOrWhiteSpace(request.NombreDestinatario) || request.NombreDestinatario.Trim().Length < 3)
+            return "Indica el nombre de quien recibe el pedido.";
+        if (string.IsNullOrWhiteSpace(request.Telefono) || request.Telefono.Trim().Length < 7)
+            return "Indica un teléfono de contacto para el envío.";
+        if (string.IsNullOrWhiteSpace(request.Direccion) || request.Direccion.Trim().Length < 5)
+            return "Indica la dirección de envío.";
+        if (string.IsNullOrWhiteSpace(request.Ciudad) || request.Ciudad.Trim().Length < 2)
+            return "Indica la ciudad de envío.";
+        return null;
+    }
+
+    private static DatosEnvioDto? MapEnvio(
+        string nombre, string telefono, string direccion, string ciudad, string? referencia)
+    {
+        if (string.IsNullOrWhiteSpace(nombre) && string.IsNullOrWhiteSpace(direccion))
+            return null;
+
+        return new DatosEnvioDto(nombre, telefono, direccion, ciudad, referencia);
+    }
+
     private static OrdenDto MapToDto(Orden o) => new(
         o.Id,
         o.Estado,
@@ -153,6 +212,7 @@ public class OrdenService(AppDbContext db)
             d.Subtotal,
             d.NotasPersonalizacion
         )).ToList(),
-        o.Comprobante?.RutaArchivo
+        o.Comprobante?.RutaArchivo,
+        MapEnvio(o.NombreDestinatario, o.TelefonoEnvio, o.DireccionEnvio, o.CiudadEnvio, o.ReferenciaEnvio)
     );
 }

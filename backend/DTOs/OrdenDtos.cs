@@ -2,6 +2,23 @@ using System.ComponentModel.DataAnnotations;
 
 namespace backend.DTOs;
 
+public record DatosEnvioDto(
+    string Nombre,
+    string Telefono,
+    string Direccion,
+    string Ciudad,
+    string? Referencia
+);
+
+public record CrearOrdenRequest(
+    IReadOnlyList<int>? ItemIds = null,
+    [Required, StringLength(100, MinimumLength = 3)] string NombreDestinatario = "",
+    [Required, StringLength(20, MinimumLength = 7)] string Telefono = "",
+    [Required, StringLength(250, MinimumLength = 5)] string Direccion = "",
+    [Required, StringLength(80, MinimumLength = 2)] string Ciudad = "",
+    [StringLength(200)] string? Referencia = null
+);
+
 public record OrdenDetalleDto(
     int ProductoId,
     string ProductoNombre,
@@ -21,7 +38,8 @@ public record OrdenDto(
     decimal SaldoPendiente,
     DateTime FechaCreacion,
     IReadOnlyList<OrdenDetalleDto> Detalles,
-    string? ComprobanteUrl
+    string? ComprobanteUrl,
+    DatosEnvioDto? Envio
 );
 
 public record OrdenResumenDto(
@@ -31,7 +49,11 @@ public record OrdenResumenDto(
     decimal MontoPagado,
     decimal SaldoPendiente,
     DateTime FechaCreacion,
-    int CantidadItems
+    int CantidadItems,
+    DatosEnvioDto? Envio,
+    bool TieneComprobante,
+    string? ComprobanteUrl,
+    string? ComprobanteMime
 );
 
 public record OrdenEmpleadoResumenDto(
@@ -66,7 +88,8 @@ public record OrdenEmpleadoDetalleDto(
     IReadOnlyList<OrdenDetalleDto> Detalles,
     string? ComprobanteUrl,
     string? ComprobanteMime,
-    string? ComprobanteNombreOriginal
+    string? ComprobanteNombreOriginal,
+    DatosEnvioDto? Envio
 );
 
 public record ActualizarEstadoOrdenRequest(

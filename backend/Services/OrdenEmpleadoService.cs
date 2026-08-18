@@ -112,6 +112,14 @@ public class OrdenEmpleadoService(AppDbContext db)
         )).ToList(),
         o.Comprobante?.RutaArchivo,
         o.Comprobante?.TipoMime,
-        o.Comprobante?.NombreOriginal
+        o.Comprobante?.NombreOriginal,
+        string.IsNullOrWhiteSpace(o.NombreDestinatario) && string.IsNullOrWhiteSpace(o.DireccionEnvio)
+            ? null
+            : new DatosEnvioDto(
+                o.NombreDestinatario,
+                o.TelefonoEnvio,
+                o.DireccionEnvio,
+                o.CiudadEnvio,
+                o.ReferenciaEnvio)
     );
 }

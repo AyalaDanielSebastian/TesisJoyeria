@@ -28,9 +28,9 @@ public class OrdenesController(
     }
 
     [HttpPost]
-    public async Task<IActionResult> CrearDesdeCarrito()
+    public async Task<IActionResult> CrearDesdeCarrito([FromBody] CrearOrdenRequest? request)
     {
-        var (orden, error) = await ordenService.CrearDesdeCarritoAsync(ClienteId);
+        var (orden, error) = await ordenService.CrearDesdeCarritoAsync(ClienteId, request ?? new CrearOrdenRequest());
         return error is not null ? BadRequest(new ErrorResponse(error)) : Ok(orden);
     }
 

@@ -2,13 +2,16 @@ import { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { DashboardLayout } from '../components/Layout'
 import { getMisOrdenes, subirComprobante } from '../services/ordenApi'
-import { formatPrice, ESTADOS_ORDEN } from '../utils/format'
+import { formatPrice, ESTADOS_ORDEN, imagenUrl } from '../utils/format'
 import '../pages/AdminDashboard.css'
+import '../components/OrdenesEmpleadoPanel.css'
 
-function estadoHint(estado) {
-  switch (estado) {
+function estadoHint(orden) {
+  switch (orden.estado) {
     case 'PendientePago':
-      return 'Sube tu comprobante de depósito para que el vendedor lo revise.'
+      return (orden.tieneComprobante || orden.comprobanteUrl)
+        ? 'Tu comprobante ya está adjunto a esta orden.'
+        : 'Sube tu comprobante de depósito para que el vendedor lo revise.'
     case 'PendienteVerificacion':
       return 'El vendedor está revisando tu comprobante. Aún no está validado.'
     case 'AnticipoValidado':
@@ -22,12 +25,18 @@ function estadoHint(estado) {
   }
 }
 
+function esImagen(mime, url) {
+  if (mime?.startsWith('image/')) return true
+  return /\.(jpe?g|png|webp)$/i.test(url || '')
+}
+
 export default function MisOrdenesPage() {
   const [ordenes, setOrdenes] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [subiendoId, setSubiendoId] = useState(null)
+  const [lightboxUrl, setLightboxUrl] = useState(null)
 
   const cargar = useCallback(async () => {
     try {
@@ -57,6 +66,15 @@ export default function MisOrdenesPage() {
     }
   }
 
+  const verComprobante = (orden) => {
+    const url = imagenUrl(orden.comprobanteUrl)
+    if (esImagen(orden.comprobanteMime, orden.comprobanteUrl)) {
+      setLightboxUrl(url)
+      return
+    }
+    window.open(url, '_blank', 'noopener,noreferrer')
+  }
+
   return (
     <DashboardLayout title="Mis órdenes" subtitle="Historial de compras, verificación del vendedor y saldos">
       {error && <div className="alert alert-danger">{error}</div>}
@@ -77,6 +95,7 @@ export default function MisOrdenesPage() {
                 <th># Orden</th>
                 <th>Fecha</th>
                 <th>Items</th>
+                <th>Envío</th>
                 <th>Total</th>
                 <th>Pagado</th>
                 <th>Falta por pagar</th>
@@ -85,42 +104,85 @@ export default function MisOrdenesPage() {
               </tr>
             </thead>
             <tbody>
-              {ordenes.map((o) => (
-                <tr key={o.id}>
-                  <td>#{o.id}</td>
-                  <td className="admin-date">{new Date(o.fechaCreacion).toLocaleDateString('es-EC')}</td>
-                  <td>{o.cantidadItems}</td>
-                  <td className="text-gold">{formatPrice(o.total)}</td>
-                  <td>{formatPrice(o.montoPagado ?? 0)}</td>
-                  <td className={o.saldoPendiente > 0 ? 'text-gold' : 'text-muted'}>
-                    {formatPrice(o.saldoPendiente ?? o.total)}
-                  </td>
-                  <td>
-                    <span className={`orden-estado orden-estado--${(o.estado || '').toLowerCase()}`}>
-                      {ESTADOS_ORDEN[o.estado] ?? o.estado}
-                    </span>
-                    {estadoHint(o.estado) && (
-                      <small className="d-block text-muted mt-1">{estadoHint(o.estado)}</small>
-                    )}
-                  </td>
-                  <td>
-                    {(o.estado === 'PendientePago' || o.estado === 'PendienteVerificacion') && (
-                      <label className="btn btn-outline-light btn-sm mb-0">
-                        {subiendoId === o.id ? 'Enviando...' : 'Subir comprobante'}
-                        <input
-                          type="file"
-                          accept=".jpg,.jpeg,.png,.pdf"
-                          hidden
-                          disabled={subiendoId === o.id}
-                          onChange={(e) => handleComprobante(o.id, e.target.files?.[0])}
-                        />
-                      </label>
-                    )}
-                  </td>
-                </tr>
-              ))}
+              {ordenes.map((o) => {
+                const yaSubio = Boolean(o.tieneComprobante || o.comprobanteUrl)
+                const puedeSubir = o.estado === 'PendientePago' && !yaSubio
+                return (
+                  <tr key={o.id}>
+                    <td>#{o.id}</td>
+                    <td className="admin-date">{new Date(o.fechaCreacion).toLocaleDateString('es-EC')}</td>
+                    <td>{o.cantidadItems}</td>
+                    <td>
+                      {o.envio ? (
+                        <>
+                          <span className="admin-name">{o.envio.nombre}</span>
+                          <br />
+                          <small className="text-muted">{o.envio.direccion}, {o.envio.ciudad}</small>
+                        </>
+                      ) : (
+                        <span className="text-muted">—</span>
+                      )}
+                    </td>
+                    <td className="text-gold">{formatPrice(o.total)}</td>
+                    <td>{formatPrice(o.montoPagado ?? 0)}</td>
+                    <td className={o.saldoPendiente > 0 ? 'text-gold' : 'text-muted'}>
+                      {formatPrice(o.saldoPendiente ?? o.total)}
+                    </td>
+                    <td>
+                      <span className={`orden-estado orden-estado--${(o.estado || '').toLowerCase()}`}>
+                        {ESTADOS_ORDEN[o.estado] ?? o.estado}
+                      </span>
+                      {estadoHint(o) && (
+                        <small className="d-block text-muted mt-1">{estadoHint(o)}</small>
+                      )}
+                    </td>
+                    <td>
+                      {yaSubio && (
+                        <button
+                          type="button"
+                          className="btn btn-outline-light btn-sm"
+                          onClick={() => verComprobante(o)}
+                        >
+                          Ver comprobante
+                        </button>
+                      )}
+                      {puedeSubir && (
+                        <label className="btn btn-outline-light btn-sm mb-0">
+                          {subiendoId === o.id ? 'Enviando...' : 'Subir comprobante'}
+                          <input
+                            type="file"
+                            accept=".jpg,.jpeg,.png,.pdf"
+                            hidden
+                            disabled={subiendoId === o.id}
+                            onChange={(e) => handleComprobante(o.id, e.target.files?.[0])}
+                          />
+                        </label>
+                      )}
+                    </td>
+                  </tr>
+                )
+              })}
             </tbody>
           </table>
+        </div>
+      )}
+
+      {lightboxUrl && (
+        <div className="lightbox-overlay" onClick={() => setLightboxUrl(null)}>
+          <button
+            type="button"
+            className="lightbox-close"
+            onClick={() => setLightboxUrl(null)}
+            aria-label="Cerrar"
+          >
+            ×
+          </button>
+          <img
+            src={lightboxUrl}
+            alt="Comprobante"
+            className="lightbox-img"
+            onClick={(e) => e.stopPropagation()}
+          />
         </div>
       )}
     </DashboardLayout>
