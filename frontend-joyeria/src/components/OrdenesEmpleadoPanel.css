@@ -1,0 +1,134 @@
+.ordenes-empleado-header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.orden-pendiente {
+  background: rgba(201, 168, 76, 0.06);
+}
+
+.orden-estado {
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.orden-estado--pendienteverificacion {
+  color: var(--gold);
+}
+
+.orden-estado--anticipovalidado,
+.orden-estado--aprobada {
+  color: #6bcb8a;
+}
+
+.orden-estado--rechazada {
+  color: #e07070;
+}
+
+.orden-detalle-modal {
+  max-height: 90vh;
+  max-width: 900px;
+  overflow-y: auto;
+  padding: 2rem;
+  width: 100%;
+}
+
+.orden-detalle-header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.orden-detalle-grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: 1fr 1fr;
+}
+
+@media (max-width: 768px) {
+  .orden-detalle-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.orden-items-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.orden-items-list li {
+  border-bottom: 1px solid var(--border);
+  padding: 0.5rem 0;
+}
+
+.comprobante-thumb-btn {
+  background: none;
+  border: 1px solid var(--border);
+  cursor: zoom-in;
+  display: block;
+  padding: 0;
+  position: relative;
+  width: 100%;
+}
+
+.comprobante-thumb {
+  display: block;
+  max-height: 280px;
+  object-fit: contain;
+  width: 100%;
+}
+
+.comprobante-zoom-hint {
+  background: rgba(0, 0, 0, 0.6);
+  bottom: 0;
+  color: #fff;
+  font-size: 0.75rem;
+  left: 0;
+  padding: 0.5rem;
+  position: absolute;
+  right: 0;
+  text-align: center;
+}
+
+.orden-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.orden-bloqueada {
+  border: 1px solid var(--border);
+  padding: 0.75rem 1rem;
+}
+
+.lightbox-overlay {
+  align-items: center;
+  background: rgba(0, 0, 0, 0.92);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  position: fixed;
+  z-index: 2000;
+}
+
+.lightbox-img {
+  max-height: 95vh;
+  max-width: 95vw;
+  object-fit: contain;
+}
+
+.lightbox-close {
+  background: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 2.5rem;
+  line-height: 1;
+  position: fixed;
+  right: 1.5rem;
+  top: 1rem;
+  z-index: 2001;
+}

@@ -1,26 +1,113 @@
-import { useAuth } from '../context/AuthContext'
+import { useState } from 'react'
+
 import { DashboardLayout } from '../components/Layout'
 
+import ProductManager from '../components/ProductManager'
+
+import OrdenesEmpleadoPanel from '../components/OrdenesEmpleadoPanel'
+
+
+
 export default function EmpleadoDashboard() {
-  const { user } = useAuth()
+
+  const [tab, setTab] = useState('pedidos')
+
+
 
   return (
+
     <DashboardLayout
-      title={`Panel de empleado`}
-      subtitle={`Hola, ${user.nombre} — gestión operativa (próximamente)`}
+
+      title="Panel de empleado"
+
+      subtitle="Verificación de pedidos y gestión de catálogo"
+
     >
-      <div className="card border-0 shadow-sm">
-        <div className="card-body p-4">
-          <span className="badge text-bg-warning text-dark mb-3">Empleado</span>
-          <p className="mb-2">
-            Acceso autorizado para <strong>{user.email}</strong>.
-          </p>
-          <p className="text-muted mb-0">
-            Aquí podrás ver órdenes pendientes, validar comprobantes de pago
-            y actualizar el inventario del catálogo (HU-04 y HU-05).
-          </p>
-        </div>
+
+      <div className="admin-tabs mb-4">
+
+        <button
+
+          type="button"
+
+          className={`admin-tab${tab === 'pedidos' ? ' active' : ''}`}
+
+          onClick={() => setTab('pedidos')}
+
+        >
+
+          Pedidos
+
+        </button>
+
+        <button
+
+          type="button"
+
+          className={`admin-tab${tab === 'catalogo' ? ' active' : ''}`}
+
+          onClick={() => setTab('catalogo')}
+
+        >
+
+          Catálogo
+
+        </button>
+
       </div>
+
+
+
+      {tab === 'pedidos' ? (
+
+        <>
+
+          <div className="dashboard-info card-brand dashboard-card mb-4">
+
+            <span className="badge-outline mb-2 d-inline-block">Vendedor</span>
+
+            <p className="mb-0 text-muted">
+
+              Revisa los pedidos entrantes, amplía el comprobante de depósito y valida el anticipo.
+
+              Una vez verificada, la orden queda bloqueada para evitar acciones duplicadas.
+
+            </p>
+
+          </div>
+
+          <OrdenesEmpleadoPanel />
+
+        </>
+
+      ) : (
+
+        <>
+
+          <div className="dashboard-info card-brand dashboard-card mb-4">
+
+            <span className="badge-outline mb-2 d-inline-block">Inventario</span>
+
+            <p className="mb-0 text-muted">
+
+              Administra el catálogo: crea productos, actualiza stock, sube imágenes
+
+              y configura metal y personalización.
+
+            </p>
+
+          </div>
+
+          <ProductManager />
+
+        </>
+
+      )}
+
     </DashboardLayout>
+
   )
+
 }
+
+

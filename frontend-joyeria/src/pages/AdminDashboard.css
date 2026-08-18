@@ -1,0 +1,142 @@
+.admin-info p {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.admin-success {
+  background-color: rgba(201, 168, 76, 0.12);
+  border: 1px solid rgba(201, 168, 76, 0.35);
+  border-radius: 0;
+  color: var(--gold-light);
+}
+
+.admin-table-wrap {
+  overflow-x: auto;
+  padding: 0;
+}
+
+.admin-table {
+  border-collapse: collapse;
+  min-width: 700px;
+  width: 100%;
+}
+
+.admin-table th {
+  border-bottom: 1px solid var(--border);
+  color: var(--gold);
+  font-family: 'Karla', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  padding: 1rem 1.25rem;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.admin-table td {
+  border-bottom: 1px solid var(--border);
+  color: var(--foreground);
+  font-size: 0.875rem;
+  padding: 1rem 1.25rem;
+  vertical-align: middle;
+}
+
+.admin-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-table tbody tr:hover {
+  background-color: rgba(201, 168, 76, 0.04);
+}
+
+.admin-row-self {
+  opacity: 0.7;
+}
+
+.admin-name {
+  font-family: 'Cormorant', serif;
+  font-size: 1.05rem;
+}
+
+.admin-date {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.admin-select {
+  font-size: 0.8rem;
+  min-width: 140px;
+}
+
+.admin-save-btn {
+  font-size: 0.65rem !important;
+  padding: 0.45rem 1rem !important;
+}
+
+.admin-rol-badge {
+  border: 1px solid var(--border);
+  font-family: 'Karla', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  padding: 0.25rem 0.6rem;
+  text-transform: uppercase;
+}
+
+.admin-rol-badge--administrador {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.admin-rol-badge--empleado {
+  color: var(--muted);
+}
+
+.admin-rol-badge--cliente {
+  color: var(--foreground);
+}
+
+.admin-tabs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.admin-tab {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  cursor: pointer;
+  font-family: 'Karla', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  padding: 0.6rem 1.5rem;
+  text-transform: uppercase;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.admin-tab:hover,
+.admin-tab.active {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.admin-row-inactive {
+  opacity: 0.55;
+}
+
+.admin-status-activo {
+  color: #6bcb8a;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.admin-status-inactivo {
+  color: #e07070;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.admin-actions {
+  white-space: nowrap;
+}

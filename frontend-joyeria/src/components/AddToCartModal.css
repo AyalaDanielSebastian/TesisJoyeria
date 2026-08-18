@@ -1,0 +1,16 @@
+.add-cart-modal {
+  max-width: 480px;
+  padding: 2rem;
+  width: 100%;
+}
+
+.add-cart-header {
+  display: flex;
+  gap: 1.25rem;
+}
+
+.add-cart-img {
+  height: 100px;
+  object-fit: cover;
+  width: 100px;
+}

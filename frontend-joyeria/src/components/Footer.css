@@ -1,0 +1,56 @@
+.site-footer {
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+  padding: 3.5rem 0 2rem;
+}
+
+.footer-top {
+  align-items: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: space-between;
+  margin-bottom: 2.5rem;
+}
+
+.footer-logo {
+  color: var(--foreground);
+  font-family: 'Cormorant', serif;
+  font-size: 1.35rem;
+  letter-spacing: 0.2em;
+  margin: 0 0 0.5rem;
+}
+
+.footer-tagline {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.footer-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.footer-links a {
+  color: var(--foreground);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.footer-links a:hover {
+  color: var(--gold);
+}
+
+.footer-bottom {
+  border-top: 1px solid var(--border);
+  padding-top: 1.5rem;
+}
+
+.footer-bottom p {
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  margin: 0;
+  text-align: center;
+}

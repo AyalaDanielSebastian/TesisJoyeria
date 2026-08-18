@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { useAuth, getDashboardPath } from '../context/AuthContext'
 import { register as registerApi } from '../services/authApi'
-import AuthLayout, { AuthFooterLink } from '../components/Layout'
+import { AuthLayout, AuthFooterLink } from '../components/Layout'
 
 export default function RegisterPage() {
   const { login, isAuthenticated, user } = useAuth()
@@ -46,10 +46,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <AuthLayout
-      title="Crear cuenta"
-      subtitle="Registro disponible para clientes"
-    >
+    <AuthLayout title="Crear cuenta" subtitle="Registro disponible para clientes">
       {error && (
         <div className="alert alert-danger py-2" role="alert">
           {error}
@@ -58,9 +55,7 @@ export default function RegisterPage() {
 
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label htmlFor="nombre" className="form-label">
-            Nombre completo
-          </label>
+          <label htmlFor="nombre" className="form-label">Nombre completo</label>
           <input
             id="nombre"
             type="text"
@@ -73,9 +68,7 @@ export default function RegisterPage() {
         </div>
 
         <div className="mb-3">
-          <label htmlFor="email" className="form-label">
-            Email
-          </label>
+          <label htmlFor="email" className="form-label">Email</label>
           <input
             id="email"
             type="email"
@@ -88,9 +81,7 @@ export default function RegisterPage() {
         </div>
 
         <div className="mb-3">
-          <label htmlFor="password" className="form-label">
-            Contraseña
-          </label>
+          <label htmlFor="password" className="form-label">Contraseña</label>
           <input
             id="password"
             type="password"
@@ -104,9 +95,7 @@ export default function RegisterPage() {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="confirmPassword" className="form-label">
-            Confirmar contraseña
-          </label>
+          <label htmlFor="confirmPassword" className="form-label">Confirmar contraseña</label>
           <input
             id="confirmPassword"
             type="password"

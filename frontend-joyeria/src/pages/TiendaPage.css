@@ -1,0 +1,54 @@
+.tienda-header {
+  padding-bottom: 0 !important;
+}
+
+.tienda-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tienda-filter {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  cursor: pointer;
+  font-family: 'Karla', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  padding: 0.5rem 1.25rem;
+  text-transform: uppercase;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.tienda-filter:hover,
+.tienda-filter.active {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.tienda-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.tienda-card .product-card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.product-card-link {
+  color: inherit;
+  text-decoration: none;
+  transition: transform 0.2s;
+}
+
+.product-card-link:hover {
+  color: inherit;
+  transform: translateY(-4px);
+}
+
+.tienda-card .btn {
+  margin-top: auto !important;
+}

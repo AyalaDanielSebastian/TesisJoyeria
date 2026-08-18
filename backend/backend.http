@@ -1,12 +1,25 @@
 @backend_HostAddress = http://localhost:5243
 
-### Login Administrador
+      "Login Administrador"
 POST {{backend_HostAddress}}/api/auth/login
 Content-Type: application/json
 
 {
   "email": "admin@joyeria.com",
   "password": "Admin123!"
+}
+
+### Listar usuarios (requiere token Admin)
+GET {{backend_HostAddress}}/api/admin/usuarios
+Authorization: Bearer {{token}}
+
+### Cambiar rol de usuario
+PUT {{backend_HostAddress}}/api/admin/usuarios/2/rol
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "rol": "Empleado"
 }
 
 ### Login Empleado

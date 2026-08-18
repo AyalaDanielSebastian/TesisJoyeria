@@ -1,0 +1,101 @@
+.producto-back {
+  display: inline-block;
+  font-size: 0.85rem;
+  margin-bottom: 2rem;
+  text-decoration: none;
+}
+
+.producto-back:hover {
+  color: var(--gold) !important;
+}
+
+.producto-detalle-grid {
+  display: grid;
+  gap: 3rem;
+  grid-template-columns: 1fr 1fr;
+}
+
+@media (max-width: 768px) {
+  .producto-detalle-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.producto-detalle-img-wrap {
+  position: relative;
+}
+
+.producto-detalle-img-wrap img {
+  aspect-ratio: 1;
+  object-fit: cover;
+  width: 100%;
+}
+
+.producto-descripcion {
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.producto-precio-box {
+  border: 1px solid var(--border);
+  padding: 1.25rem 1.5rem;
+}
+
+.producto-precio-dinamico {
+  color: var(--gold);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  margin: 0.25rem 0 0;
+}
+
+.metal-opciones {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.metal-opcion {
+  align-items: center;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  transition: border-color 0.2s;
+}
+
+.metal-opcion input {
+  accent-color: var(--gold);
+}
+
+.metal-opcion.selected,
+.metal-opcion:hover {
+  border-color: var(--gold);
+}
+
+.metal-nombre {
+  flex: 1;
+}
+
+.metal-mod {
+  color: var(--gold);
+  font-size: 0.85rem;
+}
+
+.producto-cantidad {
+  max-width: 120px;
+}
+
+.producto-form .form-select,
+.producto-form .form-control {
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+.producto-form .form-select:focus,
+.producto-form .form-control:focus {
+  border-color: var(--gold);
+  box-shadow: none;
+}

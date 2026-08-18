@@ -1,0 +1,29 @@
+.category-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  flex: 1;
+  min-width: 160px;
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  transition: border-color 0.3s ease;
+}
+
+.category-card:hover,
+.category-card--active {
+  border-color: var(--gold);
+}
+
+.category-card-name {
+  color: var(--foreground);
+  font-family: 'Cormorant', serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin: 0 0 0.35rem;
+}
+
+.category-card-count {
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin: 0;
+}

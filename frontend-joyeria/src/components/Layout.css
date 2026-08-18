@@ -1,0 +1,138 @@
+.site-layout {
+  background-color: var(--background);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.site-main {
+  flex: 1;
+  padding: 6rem 0 3rem;
+}
+
+.site-main--full {
+  flex: 1;
+  padding-top: 4.5rem;
+}
+
+/* Auth */
+.auth-section {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: calc(100vh - 12rem);
+  padding: 2rem 1.5rem;
+}
+
+.auth-card {
+  max-width: 440px;
+  width: 100%;
+}
+
+.auth-card-header {
+  border-bottom: 1px solid var(--border);
+  padding: 2rem 2rem 1.5rem;
+}
+
+.auth-title {
+  color: var(--foreground);
+  font-size: 2rem;
+  font-weight: 300;
+  margin: 0;
+}
+
+.auth-subtitle {
+  color: var(--muted);
+  font-size: 0.875rem;
+  margin: 0.5rem 0 0;
+}
+
+.auth-card-body {
+  padding: 2rem;
+}
+
+.auth-footer-link {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin: 1.25rem 0 0;
+  text-align: center;
+}
+
+.auth-demo-box {
+  background-color: var(--background);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin-top: 1.5rem;
+  padding: 1rem 1.25rem;
+}
+
+.auth-demo-box strong {
+  color: var(--foreground);
+}
+
+.auth-demo-box ul {
+  margin: 0.5rem 0 0;
+  padding-left: 1.25rem;
+}
+
+/* Dashboard */
+.dashboard-section {
+  padding: 0 1.5rem 3rem;
+}
+
+.dashboard-section .container-narrow,
+.dashboard-header {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.dashboard-title {
+  color: var(--foreground);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 300;
+  margin: 0;
+}
+
+.dashboard-subtitle {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin: 0.5rem 0 0;
+}
+
+.dashboard-card {
+  margin-top: 2rem;
+  padding: 2rem;
+}
+
+.dashboard-card p:last-child {
+  margin-bottom: 0;
+}
+
+.dashboard-card strong {
+  color: var(--gold);
+}
+
+.cliente-actions {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+.cliente-action-card {
+  color: inherit;
+  display: block;
+  padding: 2rem;
+  text-decoration: none;
+  transition: border-color 0.25s ease;
+}
+
+.cliente-action-card:hover {
+  border-color: var(--gold);
+  color: inherit;
+}
+
+.dashboard-info p {
+  color: var(--muted);
+  font-size: 0.9rem;
+}

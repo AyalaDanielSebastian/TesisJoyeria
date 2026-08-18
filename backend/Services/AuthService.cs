@@ -40,6 +40,12 @@ public class AuthService(AppDbContext db, IConfiguration config)
         if (usuario is null || !BCrypt.Net.BCrypt.Verify(request.Password, usuario.PasswordHash))
             return (null, "Email o contraseña incorrectos.");
 
+        if (!usuario.Activo)
+            return (null, "Tu cuenta está desactivada. Contacta al administrador.");
+
+        usuario.UltimoAcceso = DateTime.UtcNow;
+        await db.SaveChangesAsync();
+
         return (BuildAuthResponse(usuario), null);
     }
 

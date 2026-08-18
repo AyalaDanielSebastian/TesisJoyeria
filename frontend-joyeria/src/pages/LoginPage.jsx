@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth, getDashboardPath } from '../context/AuthContext'
 import { login as loginApi } from '../services/authApi'
-import AuthLayout, { AuthFooterLink } from '../components/Layout'
+import { AuthLayout, AuthFooterLink } from '../components/Layout'
 
 export default function LoginPage() {
   const { login, isAuthenticated, user } = useAuth()
@@ -43,9 +43,7 @@ export default function LoginPage() {
 
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label htmlFor="email" className="form-label">
-            Email
-          </label>
+          <label htmlFor="email" className="form-label">Email</label>
           <input
             id="email"
             type="email"
@@ -58,9 +56,7 @@ export default function LoginPage() {
         </div>
 
         <div className="mb-4">
-          <label htmlFor="password" className="form-label">
-            Contraseña
-          </label>
+          <label htmlFor="password" className="form-label">Contraseña</label>
           <input
             id="password"
             type="password"
@@ -79,9 +75,9 @@ export default function LoginPage() {
 
       <AuthFooterLink text="¿No tienes cuenta?" linkText="Regístrate" to="/register" />
 
-      <div className="mt-4 p-3 bg-light rounded small text-muted">
+      <div className="auth-demo-box">
         <strong>Cuentas de prueba:</strong>
-        <ul className="mb-0 mt-1">
+        <ul>
           <li>Admin: admin@joyeria.com / Admin123!</li>
           <li>Empleado: empleado@joyeria.com / Empleado123!</li>
           <li>Cliente: regístrate en la plataforma</li>

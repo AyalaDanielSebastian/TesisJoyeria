@@ -32,3 +32,4 @@ backend/.vs/
 backend/.tools/
 backend/*.user
 backend/appsettings.Development.json
+backend/uploads/

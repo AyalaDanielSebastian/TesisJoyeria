@@ -12,6 +12,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<AdminService>();
+builder.Services.AddScoped<ProductoService>();
+builder.Services.AddScoped<CarritoService>();
+builder.Services.AddScoped<OrdenService>();
+builder.Services.AddScoped<OrdenEmpleadoService>();
+builder.Services.AddScoped<FileStorageService>();
 
 var jwt = builder.Configuration.GetSection("Jwt");
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -73,6 +79,10 @@ using (var scope = app.Services.CreateScope())
     await DbSeeder.SeedAsync(db);
 }
 
+var uploadsPath = Path.Combine(app.Environment.ContentRootPath, "uploads");
+Directory.CreateDirectory(Path.Combine(uploadsPath, "productos"));
+Directory.CreateDirectory(Path.Combine(uploadsPath, "comprobantes"));
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -80,6 +90,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("Frontend");
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(uploadsPath),
+    RequestPath = "/uploads"
+});
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

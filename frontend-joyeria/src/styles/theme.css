@@ -1,0 +1,32 @@
+:root {
+  /* Marca — Noir & Gold */
+  --gold: #c9a84c;
+  --gold-light: #dfc06e;
+  --gold-dark: #a8893a;
+  --background: #0d0d0d;
+  --surface: #1a1a1a;
+  --surface-hover: #222222;
+  --border: #2a2a2a;
+  --foreground: #f5f3ee;
+  --muted: #9a9590;
+  --muted-foreground: #6b6660;
+
+  /* Semánticos (compatibles con shadcn) */
+  --primary: var(--gold);
+  --primary-foreground: #0d0d0d;
+  --card: var(--surface);
+  --card-foreground: var(--foreground);
+  --destructive: #c44;
+  --ring: var(--gold);
+
+  /* Bootstrap overrides */
+  --bs-body-bg: var(--background);
+  --bs-body-color: var(--foreground);
+  --bs-primary: var(--gold);
+  --bs-primary-rgb: 201, 168, 76;
+  --bs-secondary: var(--surface);
+  --bs-border-color: var(--border);
+  --bs-link-color: var(--gold);
+  --bs-link-hover-color: var(--gold-light);
+  --bs-font-sans-serif: 'Karla', system-ui, sans-serif;
+}

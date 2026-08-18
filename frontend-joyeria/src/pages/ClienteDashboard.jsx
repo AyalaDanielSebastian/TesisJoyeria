@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { DashboardLayout } from '../components/Layout'
 
@@ -7,19 +8,24 @@ export default function ClienteDashboard() {
   return (
     <DashboardLayout
       title={`Bienvenido, ${user.nombre}`}
-      subtitle="Panel del cliente — catálogo y compras (próximamente)"
+      subtitle="Tu espacio de compras"
     >
-      <div className="card border-0 shadow-sm">
-        <div className="card-body p-4">
-          <span className="badge text-bg-primary mb-3">Cliente</span>
-          <p className="mb-2">
-            Has iniciado sesión correctamente como <strong>{user.email}</strong>.
-          </p>
-          <p className="text-muted mb-0">
-            Desde aquí podrás navegar el catálogo de joyas, agregar productos al carrito
-            y subir comprobantes de pago (HU-02 y HU-03).
-          </p>
-        </div>
+      <div className="cliente-actions">
+        <Link to="/tienda" className="cliente-action-card card-brand">
+          <span className="badge-gold mb-2 d-inline-block">Tienda</span>
+          <h3 className="auth-title h5">Explorar joyas</h3>
+          <p className="text-muted mb-0">Navega el catálogo y personaliza tus piezas.</p>
+        </Link>
+        <Link to="/cliente/carrito" className="cliente-action-card card-brand">
+          <span className="badge-gold mb-2 d-inline-block">Carrito</span>
+          <h3 className="auth-title h5">Mi carrito</h3>
+          <p className="text-muted mb-0">Revisa tus selecciones y confirma tu orden.</p>
+        </Link>
+        <Link to="/cliente/ordenes" className="cliente-action-card card-brand">
+          <span className="badge-outline mb-2 d-inline-block">Órdenes</span>
+          <h3 className="auth-title h5">Mis órdenes</h3>
+          <p className="text-muted mb-0">Consulta el estado de tus compras y pagos.</p>
+        </Link>
       </div>
     </DashboardLayout>
   )

@@ -1,0 +1,77 @@
+.product-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.product-card:hover {
+  border-color: var(--gold);
+}
+
+.product-card-image-wrap {
+  aspect-ratio: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.product-card-image {
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+  width: 100%;
+}
+
+.product-card:hover .product-card-image {
+  transform: scale(1.04);
+}
+
+.product-badge {
+  left: 0.75rem;
+  position: absolute;
+  top: 0.75rem;
+  z-index: 1;
+}
+
+.badge-agotada {
+  background: rgba(80, 80, 80, 0.9);
+  color: #ccc;
+  font-family: 'Karla', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  padding: 0.35rem 0.75rem;
+  position: absolute;
+  right: 0.75rem;
+  text-transform: uppercase;
+  top: 0.75rem;
+  z-index: 1;
+}
+
+.product-card--agotada {
+  opacity: 0.75;
+}
+
+.product-card--agotada .product-card-image {
+  filter: grayscale(0.4);
+}
+
+.product-card-body {
+  padding: 1.25rem 1.5rem 1.5rem;
+}
+
+.product-card-name {
+  color: var(--foreground);
+  font-family: 'Cormorant', serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  margin: 0 0 0.35rem;
+}
+
+.product-card-price {
+  color: var(--gold);
+  font-family: 'Karla', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  margin: 0;
+}

@@ -23,5 +23,25 @@ public class Usuario
     [StringLength(20)]
     public string Rol { get; set; } = "Cliente";
 
+    public bool Activo { get; set; } = true;
+
     public DateTime FechaRegistro { get; set; } = DateTime.UtcNow;
+
+    public DateTime? FechaActualizacion { get; set; }
+
+    public DateTime? UltimoAcceso { get; set; }
+
+    public DateTime? FechaDesactivacion { get; set; }
+
+    public int? ModificadoPorId { get; set; }
+
+    public Usuario? ModificadoPor { get; set; }
+
+    public ICollection<Orden> OrdenesComoCliente { get; set; } = [];
+
+    public ICollection<Orden> OrdenesVerificadas { get; set; } = [];
+
+    public ICollection<CarritoItem> ItemsCarrito { get; set; } = [];
+
+    public ICollection<HistorialInventario> CambiosInventario { get; set; } = [];
 }
