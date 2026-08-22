@@ -62,12 +62,26 @@ public static class PrecioPersonalizacionService
 
     public static List<string> ObtenerTallas(Producto producto)
     {
+        if (CategoriaSinTalla(producto.Categoria?.Nombre))
+            return [];
+
         if (string.IsNullOrWhiteSpace(producto.TallasDisponibles))
             return [];
 
         return producto.TallasDisponibles
             .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
             .ToList();
+    }
+
+    /// <summary>Aretes/pendientes no usan talla.</summary>
+    public static bool CategoriaSinTalla(string? categoriaNombre)
+    {
+        if (string.IsNullOrWhiteSpace(categoriaNombre))
+            return false;
+
+        var nombre = categoriaNombre.Trim();
+        return nombre.Equals("Pendientes", StringComparison.OrdinalIgnoreCase)
+            || nombre.Equals("Aretes", StringComparison.OrdinalIgnoreCase);
     }
 
     public static (decimal PrecioUnitario, string? Error) CalcularPrecioUnitario(

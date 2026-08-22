@@ -120,6 +120,9 @@ export default function ProductManager() {
     }))
   }
 
+  const categoriaSeleccionada = categorias.find((c) => String(c.id) === String(form.categoriaId))
+  const esPendientesOAretes = /pendientes|aretes/i.test(categoriaSeleccionada?.nombre || '')
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (form.permitePersonalizacion && form.metalesDisponibles.length === 0) {
@@ -141,7 +144,9 @@ export default function ProductManager() {
         imagenUrl: form.imagenUrl,
         materialDefault: form.metalesDisponibles[0] || form.materialDefault,
         metalesDisponibles: form.metalesDisponibles,
-        tallasDisponibles: form.permitePersonalizacion ? form.tallasDisponibles : '',
+        tallasDisponibles: form.permitePersonalizacion && !esPendientesOAretes
+          ? form.tallasDisponibles
+          : '',
         recargoGrabado: parseFloat(form.recargoGrabado) || 0,
       }
 
@@ -295,7 +300,7 @@ export default function ProductManager() {
                   checked={form.permitePersonalizacion}
                   onChange={(e) => setForm({ ...form, permitePersonalizacion: e.target.checked })} />
                 <label className="form-check-label" htmlFor="permitePers">
-                  Permite personalización (metal, talla, grabado)
+                  Permite personalización (material, grabado{esPendientesOAretes ? '' : ', talla'})
                 </label>
               </div>
               {form.permitePersonalizacion && (
@@ -330,13 +335,20 @@ export default function ProductManager() {
                       Solo los materiales marcados se muestran al cliente. El precio de la joya no cambia por material.
                     </small>
                   </div>
-                  <div className="mb-3">
-                    <label className="form-label">Tallas disponibles</label>
-                    <input className="form-control" placeholder="Ej: 5,6,7,8,9,10 o S,M,L"
-                      value={form.tallasDisponibles}
-                      onChange={(e) => setForm({ ...form, tallasDisponibles: e.target.value })} />
-                    <small className="text-muted">Separadas por coma. Dejar vacío si no aplica.</small>
-                  </div>
+                  {!esPendientesOAretes && (
+                    <div className="mb-3">
+                      <label className="form-label">Tallas disponibles</label>
+                      <input className="form-control" placeholder="Ej: 5,6,7,8,9,10 o S,M,L"
+                        value={form.tallasDisponibles}
+                        onChange={(e) => setForm({ ...form, tallasDisponibles: e.target.value })} />
+                      <small className="text-muted">Separadas por coma. Dejar vacío si no aplica.</small>
+                    </div>
+                  )}
+                  {esPendientesOAretes && (
+                    <p className="text-muted small mb-3">
+                      Los pendientes/aretes no usan talla.
+                    </p>
+                  )}
                   <div className="mb-3">
                     <label className="form-label">Recargo por grabado ($)</label>
                     <input type="number" step="0.01" min="0" className="form-control"

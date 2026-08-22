@@ -1,5 +1,4 @@
-import { Link } from 'react-router-dom'
-import { BRAND_NAME } from '../utils/brand'
+import { BRAND_NAME, BRAND_LOGO } from '../utils/brand'
 import './Footer.css'
 
 export default function Footer() {
@@ -8,13 +7,20 @@ export default function Footer() {
       <div className="container-narrow">
         <div className="footer-top">
           <div>
-            <p className="footer-logo">{BRAND_NAME}</p>
+            <div className="footer-brand">
+              <img src={BRAND_LOGO} alt="" className="footer-logo-mark" />
+              <p className="footer-logo">{BRAND_NAME}</p>
+            </div>
             <p className="footer-tagline">Joyería fina artesanal</p>
           </div>
           <div className="footer-links">
-            <a href="https://instagram.com" target="_blank" rel="noreferrer">Instagram</a>
-            <a href="https://pinterest.com" target="_blank" rel="noreferrer">Pinterest</a>
-            <Link to="/login">Contacto</Link>
+            <a
+              href="https://www.instagram.com/laurea_joyeria_fina?igsh=aWw0cmRsOTk1cWxp&igsi=aWw0cmRsOTk1cWxp"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Instagram
+            </a>
           </div>
         </div>
         <div className="footer-bottom">

@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth, getDashboardPath } from '../context/AuthContext'
-import { BRAND_NAME, tiendaUrl } from '../utils/brand'
+import { BRAND_NAME, BRAND_LOGO, tiendaUrl } from '../utils/brand'
 import './Navbar.css'
 
 const NAV_LINKS = [
@@ -26,7 +26,8 @@ export default function Navbar() {
     <header className="navbar-brand-custom fixed-top">
       <div className="navbar-inner">
         <Link to="/" className="navbar-logo">
-          {BRAND_NAME}
+          <img src={BRAND_LOGO} alt="" className="navbar-logo-mark" />
+          <span>{BRAND_NAME}</span>
         </Link>
 
         <nav className="navbar-links d-none d-lg-flex">

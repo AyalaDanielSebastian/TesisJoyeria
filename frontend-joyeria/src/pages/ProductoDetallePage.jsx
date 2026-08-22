@@ -66,7 +66,8 @@ export default function ProductoDetallePage() {
   )
 
   const tallas = tallasDe(producto)
-  const requiereTalla = Boolean(producto?.permitePersonalizacion) && tallas.length > 0
+  const esPendientes = /pendientes|aretes/i.test(producto?.categoriaNombre || '')
+  const requiereTalla = Boolean(producto?.permitePersonalizacion) && !esPendientes && tallas.length > 0
   const agotada = producto?.stock === 0
 
   const validarOpciones = () => {

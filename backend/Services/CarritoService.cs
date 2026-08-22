@@ -38,7 +38,9 @@ public class CarritoService(AppDbContext db)
 
     public async Task<(CarritoDto? Carrito, string? Error)> AgregarAsync(int usuarioId, AddCarritoRequest req)
     {
-        var producto = await db.Productos.FirstOrDefaultAsync(p => p.Id == req.ProductoId && p.Activo);
+        var producto = await db.Productos
+            .Include(p => p.Categoria)
+            .FirstOrDefaultAsync(p => p.Id == req.ProductoId && p.Activo);
         if (producto is null)
             return (null, "Producto no encontrado o no disponible.");
 
@@ -105,7 +107,7 @@ public class CarritoService(AppDbContext db)
         int usuarioId, int itemId, UpdateCarritoRequest req)
     {
         var item = await db.CarritoItems
-            .Include(c => c.Producto)
+            .Include(c => c.Producto).ThenInclude(p => p.Categoria)
             .FirstOrDefaultAsync(c => c.Id == itemId && c.UsuarioId == usuarioId);
 
         if (item is null)

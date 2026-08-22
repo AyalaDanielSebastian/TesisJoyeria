@@ -42,7 +42,9 @@ public class ProductoService(AppDbContext db)
     public async Task<(CalcularPrecioResponse? Resultado, string? Error)> CalcularPrecioAsync(
         int id, CalcularPrecioRequest req)
     {
-        var producto = await db.Productos.FirstOrDefaultAsync(p => p.Id == id && p.Activo);
+        var producto = await db.Productos
+            .Include(p => p.Categoria)
+            .FirstOrDefaultAsync(p => p.Id == id && p.Activo);
         if (producto is null)
             return (null, "Producto no encontrado.");
 
@@ -68,6 +70,10 @@ public class ProductoService(AppDbContext db)
             return (null, "Categoría no encontrada.");
 
         var metales = NormalizarMetales(req.MetalesDisponibles, req.MaterialDefault);
+        var categoria = await db.Categorias.FindAsync(req.CategoriaId);
+        var tallas = req.PermitePersonalizacion ? req.TallasDisponibles.Trim() : string.Empty;
+        if (PrecioPersonalizacionService.CategoriaSinTalla(categoria?.Nombre))
+            tallas = string.Empty;
 
         var producto = new Producto
         {
@@ -80,9 +86,7 @@ public class ProductoService(AppDbContext db)
             ImagenUrl = req.ImagenUrl,
             MaterialDefault = metales[0],
             OpcionesMetales = PrecioPersonalizacionService.SerializarMetales(metales),
-            TallasDisponibles = req.PermitePersonalizacion
-                ? req.TallasDisponibles.Trim()
-                : string.Empty,
+            TallasDisponibles = tallas,
             RecargoGrabado = req.RecargoGrabado
         };
 
@@ -103,6 +107,10 @@ public class ProductoService(AppDbContext db)
 
         var stockAnterior = producto.Stock;
         var metales = NormalizarMetales(req.MetalesDisponibles, req.MaterialDefault);
+        var categoria = await db.Categorias.FindAsync(req.CategoriaId);
+        var tallas = req.PermitePersonalizacion ? req.TallasDisponibles.Trim() : string.Empty;
+        if (PrecioPersonalizacionService.CategoriaSinTalla(categoria?.Nombre))
+            tallas = string.Empty;
 
         producto.Nombre = req.Nombre.Trim();
         producto.Descripcion = req.Descripcion.Trim();
@@ -113,9 +121,7 @@ public class ProductoService(AppDbContext db)
         producto.Activo = req.Activo;
         producto.MaterialDefault = metales[0];
         producto.OpcionesMetales = PrecioPersonalizacionService.SerializarMetales(metales);
-        producto.TallasDisponibles = req.PermitePersonalizacion
-            ? req.TallasDisponibles.Trim()
-            : string.Empty;
+        producto.TallasDisponibles = tallas;
         producto.RecargoGrabado = req.RecargoGrabado;
         producto.FechaActualizacion = DateTime.UtcNow;
 

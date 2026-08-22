@@ -1,3 +1,6 @@
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
+
 namespace backend.Services;
 
 public class FileStorageService(IConfiguration config, IWebHostEnvironment env)
@@ -7,19 +10,25 @@ public class FileStorageService(IConfiguration config, IWebHostEnvironment env)
         config["Uploads:ComprobantesPath"]?.Replace("comprobantes", "") ?? "uploads"
     );
 
+    private bool UsaBlob => !string.IsNullOrWhiteSpace(config["AzureStorage:ConnectionString"]);
+
     public async Task<string> GuardarImagenProductoAsync(IFormFile file)
     {
         ValidarImagen(file);
-        var dir = Path.Combine(_basePath, "productos");
-        Directory.CreateDirectory(dir);
-
         var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
         var nombre = $"{Guid.NewGuid():N}{ext}";
-        var ruta = Path.Combine(dir, nombre);
 
+        if (UsaBlob)
+        {
+            var container = config["AzureStorage:ProductosContainer"] ?? "productos";
+            return await SubirBlobAsync(container, nombre, file);
+        }
+
+        var dir = Path.Combine(_basePath, "productos");
+        Directory.CreateDirectory(dir);
+        var ruta = Path.Combine(dir, nombre);
         await using var stream = new FileStream(ruta, FileMode.Create);
         await file.CopyToAsync(stream);
-
         return $"/uploads/productos/{nombre}";
     }
 
@@ -27,17 +36,41 @@ public class FileStorageService(IConfiguration config, IWebHostEnvironment env)
         IFormFile file, int ordenId)
     {
         ValidarComprobante(file);
-        var dir = Path.Combine(_basePath, "comprobantes");
-        Directory.CreateDirectory(dir);
-
         var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
         var nombre = $"orden-{ordenId}-{Guid.NewGuid():N}{ext}";
-        var ruta = Path.Combine(dir, nombre);
 
+        if (UsaBlob)
+        {
+            var container = config["AzureStorage:ComprobantesContainer"] ?? "comprobantes";
+            var url = await SubirBlobAsync(container, nombre, file);
+            return (url, file.FileName, file.ContentType, file.Length);
+        }
+
+        var dir = Path.Combine(_basePath, "comprobantes");
+        Directory.CreateDirectory(dir);
+        var ruta = Path.Combine(dir, nombre);
         await using var stream = new FileStream(ruta, FileMode.Create);
         await file.CopyToAsync(stream);
-
         return ($"/uploads/comprobantes/{nombre}", file.FileName, file.ContentType, file.Length);
+    }
+
+    private async Task<string> SubirBlobAsync(string containerName, string blobName, IFormFile file)
+    {
+        var client = new BlobServiceClient(config["AzureStorage:ConnectionString"]);
+        var container = client.GetBlobContainerClient(containerName);
+        await container.CreateIfNotExistsAsync(PublicAccessType.Blob);
+
+        var blob = container.GetBlobClient(blobName);
+        var headers = new BlobHttpHeaders
+        {
+            ContentType = string.IsNullOrWhiteSpace(file.ContentType)
+                ? "application/octet-stream"
+                : file.ContentType
+        };
+
+        await using var stream = file.OpenReadStream();
+        await blob.UploadAsync(stream, new BlobUploadOptions { HttpHeaders = headers });
+        return blob.Uri.ToString();
     }
 
     private void ValidarImagen(IFormFile file)

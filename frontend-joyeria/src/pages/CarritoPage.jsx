@@ -18,7 +18,7 @@ const ENVIO_VACIO = {
   nombre: '',
   telefono: '',
   direccion: '',
-  ciudad: '',
+  ciudad: 'Quito',
   referencia: '',
 }
 
@@ -30,6 +30,7 @@ function cargarEnvioGuardado(nombreUsuario) {
       ...ENVIO_VACIO,
       ...saved,
       nombre: saved.nombre || nombreUsuario || '',
+      ciudad: saved.ciudad || 'Quito',
     }
   } catch {
     return { ...ENVIO_VACIO, nombre: nombreUsuario || '' }
@@ -295,7 +296,8 @@ export default function CarritoPage() {
             <div className="cart-envio card-brand">
               <h3 className="auth-title h5 mb-2">Datos de envío</h3>
               <p className="text-muted small mb-3">
-                Indica a dónde llega este pedido. Los datos se guardan con la orden, no en una ficha de cuenta.
+                Indica a dónde llega este pedido. El anticipo que pagas ya incluye el costo de envío;
+                este beneficio aplica para entregas en Quito.
               </p>
               <div className="row g-3">
                 <div className="col-md-6">
@@ -368,6 +370,9 @@ export default function CarritoPage() {
               </div>
               <p className="cart-anticipo">
                 Anticipo a transferir (50%): {formatPrice(Math.round(resumen.total * 0.5 * 100) / 100)}
+              </p>
+              <p className="text-muted small mb-0">
+                El anticipo incluye el envío dentro de Quito.
               </p>
               <label className="form-label label-caps mt-3" htmlFor="comprobante">
                 Comprobante de transferencia <span className="text-gold">*</span>

@@ -77,6 +77,34 @@ public class OrdenEmpleadoService(AppDbContext db)
             if (monto > orden.Total)
                 return (null, "El monto pagado no puede superar el total de la orden.");
             orden.MontoPagado = monto;
+
+            var lineas = orden.Detalles
+                .GroupBy(d => d.ProductoId)
+                .Select(g => (
+                    Producto: g.First().Producto,
+                    Cantidad: g.Sum(d => d.Cantidad)))
+                .ToList();
+
+            foreach (var (producto, cantidad) in lineas)
+            {
+                if (cantidad > producto.Stock)
+                    return (null,
+                        $"Stock insuficiente para '{producto.Nombre}'. Disponible: {producto.Stock}.");
+            }
+
+            foreach (var (producto, cantidad) in lineas)
+            {
+                var stockAnterior = producto.Stock;
+                producto.Stock -= cantidad;
+                db.HistorialInventario.Add(new HistorialInventario
+                {
+                    ProductoId = producto.Id,
+                    StockAnterior = stockAnterior,
+                    StockNuevo = producto.Stock,
+                    UsuarioId = empleadoId,
+                    Motivo = $"Anticipo validado — orden #{orden.Id}"
+                });
+            }
         }
 
         orden.Estado = req.Estado;

@@ -13,12 +13,26 @@
   margin-bottom: 2.5rem;
 }
 
+.footer-brand {
+  align-items: center;
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.footer-logo-mark {
+  display: block;
+  height: 2.75rem;
+  object-fit: contain;
+  width: auto;
+}
+
 .footer-logo {
   color: var(--foreground);
   font-family: 'Cormorant', serif;
   font-size: 1.35rem;
   letter-spacing: 0.2em;
-  margin: 0 0 0.5rem;
+  margin: 0;
 }
 
 .footer-tagline {
